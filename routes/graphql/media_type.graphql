@@ -1,0 +1,8 @@
+type MediaType {
+    id: ID!
+    title: String!
+    max_weight: String!
+    created_at: DateTime!
+    updated_at: DateTime!
+    medias: [Media!]! @hasMany
+}

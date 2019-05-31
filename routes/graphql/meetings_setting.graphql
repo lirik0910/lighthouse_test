@@ -1,0 +1,10 @@
+type MeetingsSetting {
+    id: ID!
+    minimal_cost: Int!
+    partner_age: String!
+    safe_deal: Boolean!
+    photos_verified: Boolean!
+    fully_verified: Boolean!
+    charity: Boolean!
+    user: User @belongsTo
+}

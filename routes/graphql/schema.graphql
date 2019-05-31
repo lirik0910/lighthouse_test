@@ -1,0 +1,57 @@
+"A datetime string with format `Y-m-d H:i:s`, e.g. `2018-01-01 13:00:00`."
+scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
+
+"A date string with format `Y-m-d`, e.g. `2011-05-23`."
+scalar Date @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date")
+
+"Can be used as an argument to upload files using https://github.com/jaydenseric/graphql-multipart-request-spec"
+scalar Upload @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Upload")
+
+#import auth.graphql
+#import user.graphql
+#import user_attribute.graphql
+#import auction.graphql
+#import stream.graphql
+#import media_type.graphql
+#import media.graphql
+#import meetings_setting.graphql
+
+
+type Query{
+    me: User @middleware(checks: ["auth:api"]) @auth
+}
+
+
+    #users: [User!]! @paginate(type: "paginator" model081295Qw: "App\\User")
+    #user(id: ID @eq): User @find(model: "App\\User")
+
+
+type Mutation{
+    "Upload a file that is publicly available."
+    upload(file: Upload!): String
+}
+#    createUser(name: String!, email: String!, password: String!): User! @create
+#    updateUser(id: ID!, name: String, email: String, passsword: String)#import comment.graphql: User @update
+#    deleteUser(id: ID!): User @delete
+
+   # updatePost(input: UpdatePostInput!): Post
+   #     @broadcast(subscription: "postUpdated")
+
+
+#type Subscription
+   # postUpdated(author: ID): Post
+
+
+#type PostPaginator {
+#    data: [Post!]!CUSTOM DIRECTIVES
+#    paginatorInfo: PaginatorInfo!
+#}
+
+#type Comment {
+#    id: ID!
+#    reply: String!
+#    body: String!
+#    post: Post! @belongsTo
+#    user: User! @belongsTo
+#}
+

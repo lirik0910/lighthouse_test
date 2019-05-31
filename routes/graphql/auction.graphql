@@ -1,0 +1,29 @@
+type Auction {
+    id: ID!
+    started_at: DateTime!
+    ended_at: DateTime!
+    started_cost: Int!
+    minimal_step: Int!
+    place: String!
+    about: String!
+    created_at: DateTime!
+    updated_at: DateTime!
+    user: User @belongsTo
+}
+
+extend type Query {
+    auction(id: ID! @eq): Auction @find
+    userAuctions(user_id: Int!): [Auction!] @middleware(checks: ["auth:api"])
+}
+
+extend type Mutation {
+    createAuction(
+        started_at: DateTime
+        end_at: DateTime! @rules(apply: ["required"])
+        started_cost: Int! @rules(apply: ["required", "numeric", "min:0", "max:9999"])
+        minimal_step: Int! @rules(apply: ["required", "numeric", "min:10"])
+        place: String! @rules(apply: ["required", "max:200"])
+        about: String! @rules(apply: ["max:255"])
+    ): Auction
+    @middleware(checks: ["auth:api"])
+}

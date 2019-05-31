@@ -1,0 +1,8 @@
+type Media {
+    id: ID!
+    description: String!
+    path: String!
+    uri: String!
+    user: User @belongsTo
+    media_type: MediaType @belongsTo
+}
