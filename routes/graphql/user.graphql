@@ -1,14 +1,14 @@
 type User {
     id: ID!
-    username: String!
-    email: String!
-    phone: String!
-    password: String!
-    created_at: DateTime!
-    updated_at: DateTime!
-    photos_verified: Boolean!
-    fully_verified: Boolean!
-    hidden: Boolean!
+    username: String
+    email: String
+    phone: String
+    password: String
+    created_at: DateTime
+    updated_at: DateTime
+    photos_verified: Boolean
+    fully_verified: Boolean
+    hidden: Boolean
     attributes: UserAttribute! @hasOne
     auctions: [Auction!]! @hasMany
     streams: [Stream!]! @hasMany
@@ -16,25 +16,29 @@ type User {
     meetings_setting: [MeetingsSetting!]! @hasOne
 }
 
+input CreateUserInput {
+    country_code: String!,
+    phone_number: String!,
+    password: String! @rules(apply: ["required", "min:8"]),
+    confirmation_password: String!
+}
+
 extend type Query {
     user(id: ID! @eq): User @find(model: "App\\User")
 }
 
 extend type Mutation {
-    createUser(
-        phone: String! @rules(apply: ["required", "unique:users"]),
-        password: String! @rules(apply: ["required", "min:8"])
-    ): User!
+    createUser(input: CreateUserInput): User!
 
     updateUser(
         id: ID!,
-        username: String! @rules(apply: ["min:3", "unique:users"]),
-        email: String! @rules(apply: ["email", "unique:users"]),
+        username: String @rules(apply: ["min:3", "unique:users"]),
+        email: String @rules(apply: ["email", "unique:users"]),
     ): User!
     @middleware(checks: ["auth:api"])
     @update
-
-    deleteUser(id: ID!): User
-    @middleware(checks: ["auth:api"])
+#
+#    deleteUser(id: ID!): User
+#    @middleware(checks: ["auth:api"])
 }
 

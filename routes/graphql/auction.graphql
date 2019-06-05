@@ -16,14 +16,14 @@ extend type Query {
     userAuctions(user_id: Int!): [Auction!] @middleware(checks: ["auth:api"])
 }
 
-extend type Mutation {
-    createAuction(
-        started_at: DateTime
-        end_at: DateTime! @rules(apply: ["required"])
-        started_cost: Int! @rules(apply: ["required", "numeric", "min:0", "max:9999"])
-        minimal_step: Int! @rules(apply: ["required", "numeric", "min:10"])
-        place: String! @rules(apply: ["required", "max:200"])
-        about: String! @rules(apply: ["max:255"])
-    ): Auction
-    @middleware(checks: ["auth:api"])
-}
+#extend type Mutation {
+#    createAuction(
+#        started_at: DateTime
+#        end_at: DateTime! @rules(apply: ["required"])
+#        started_cost: Int! @rules(apply: ["required", "numeric", "min:0", "max:9999"])
+#        minimal_step: Int! @rules(apply: ["required", "numeric", "min:10"])
+#        place: String! @rules(apply: ["required", "max:200"])
+#        about: String! @rules(apply: ["max:255"])
+#    ): Auction
+#    @middleware(checks: ["auth:api"])
+#}

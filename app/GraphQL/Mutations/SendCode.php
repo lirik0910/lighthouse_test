@@ -2,12 +2,12 @@
 
 namespace App\GraphQL\Mutations;
 
-use App\User;
-use App\UserAttribute;
+use App\GraphQL\Mutations\BaseCodeResolver;
 use GraphQL\Type\Definition\ResolveInfo;
+use Illuminate\Support\Facades\Cookie;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
-class DeleteUser
+class SendCode extends BaseCodeResolver
 {
     /**
      * Return a value for the field.
@@ -20,8 +20,16 @@ class DeleteUser
      */
     public function resolve($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        if(UserAttribute::where('user_id', $args['id'])->delete()){
-            return User::where('id', $args['id'])->delete();
+        $this->phone = implode('', $args['input']);
+
+        $checkingPhone = $this->setOnCheckingPhone();
+
+        if($checkingPhone){
+            $this->writeToFile($checkingPhone);
+
+            Cookie::queue('token', $checkingPhone->token, 60);
         }
+
+        return $checkingPhone;
     }
 }

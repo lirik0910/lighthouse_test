@@ -1,10 +1,7 @@
 input LoginInput {
-    username: String!
+    country_code: String!
+    phone_number: String!
     password: String!
-}
-
-input RefreshTokenInput {
-    refresh_token: String
 }
 
 type AuthPayload {
@@ -19,26 +16,16 @@ type LogoutResponse {
     message: String
 }
 
-type ForgotPasswordResponse {
-    status: String!
-    message: String
-}
-
-input ForgotPasswordInput {
-    email: String!
-}
-
 input NewPasswordWithCodeInput {
-    email: String!
-    token: String!
+    country_code: String!
+    phone_number: String!
     password: String!
     password_confirmation: String!
 }
 
 extend type Mutation {
-    login(data: LoginInput): AuthPayload! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\Login@resolve")
-    refreshToken(data: RefreshTokenInput): AuthPayload! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\RefreshToken@resolve")
-    logout: LogoutResponse! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\Logout@resolve")
-    forgotPassword(data: ForgotPasswordInput!): ForgotPasswordResponse! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\ForgotPassword@resolve")
-    updateForgottenPassword(data: NewPasswordWithCodeInput): ForgotPasswordResponse! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\ResetPassword@resolve")
+    login(data: LoginInput): AuthPayload!
+    refreshToken(data: LoginInput): AuthPayload! @field(resolver: "App\\GraphQL\\Mutations\\Login@resolve")
+    logout: LogoutResponse!
+    resetPassword(input: NewPasswordWithCodeInput): Boolean
 }

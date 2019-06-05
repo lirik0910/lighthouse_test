@@ -1,0 +1,26 @@
+type ApprovePhone {
+    id: ID
+    phone: String
+    code: String
+    uodated_at: DateTime
+    created_at: DateTime
+}
+
+input GetCodeInput {
+    country_code: String!
+    phone_number: String!
+}
+
+input CheckCodeInput {
+    country_code: String!
+    phone_number: String!
+    code: String!
+}
+
+extend type Query {
+    checkCode(input: CheckCodeInput): Boolean!
+}
+
+extend type Mutation {
+    sendCode(input: GetCodeInput): ApprovePhone
+}

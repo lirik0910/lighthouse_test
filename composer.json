@@ -16,7 +16,8 @@
         "laravel/tinker": "^1.0",
         "mll-lab/laravel-graphql-playground": "^1.0",
         "nuwave/lighthouse": "^3.4",
-        "pusher/pusher-php-server": "^3.4"
+        "pusher/pusher-php-server": "^3.4",
+        "ext-json": "*"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",

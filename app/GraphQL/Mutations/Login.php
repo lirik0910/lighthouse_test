@@ -2,11 +2,10 @@
 
 namespace App\GraphQL\Mutations;
 
-use App\UserAttribute;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
-class CreateUserAttributes
+class Login extends BaseAuthResolver
 {
     /**
      * Return a value for the field.
@@ -19,8 +18,7 @@ class CreateUserAttributes
      */
     public function resolve($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $args['user_id'] = $context->user()->getAttribute('id');
-
-        return UserAttribute::create($args);
+        $credentials = $this->buildCredentials($args);
+        return $this->makeRequest($credentials);
     }
 }

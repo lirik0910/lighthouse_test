@@ -1,12 +1,13 @@
 <?php
 
-namespace App\GraphQL\Queries;
+namespace App\GraphQL\Mutations;
 
-use App\Auction;
 use GraphQL\Type\Definition\ResolveInfo;
+use Illuminate\Support\Facades\Auth;
+use Nuwave\Lighthouse\Exceptions\AuthenticationException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
-class UserAuctions
+class Logout
 {
     /**
      * Return a value for the field.
@@ -19,6 +20,14 @@ class UserAuctions
      */
     public function resolve($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        return Auction::where('user_id', $args['user_id'])->get();
+        if (!Auth::guard('api')->check()) {
+            throw new AuthenticationException("Not Authenticated");
+        }
+        // revoke user's token
+        Auth::guard('api')->user()->token()->revoke();
+        return [
+            'status' => 'TOKEN_REVOKED',
+            'message' => 'Your session has been terminated'
+        ];
     }
 }

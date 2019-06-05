@@ -3,11 +3,11 @@
 namespace App\GraphQL\Mutations;
 
 use App\User;
-use Illuminate\Support\Facades\Hash;
 use GraphQL\Type\Definition\ResolveInfo;
+use Illuminate\Support\Facades\Hash;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
-class CreateUser
+class CreateUser extends BaseAuthResolver
 {
     /**
      * Return a value for the field.
@@ -20,9 +20,13 @@ class CreateUser
      */
     public function resolve($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        return User::create([
-            'password' => Hash::make($args['password']),
-            'phone' => $args['phone']
-        ]);
+        $phone = $args['input']['country_code'] . $args['input']['phone_number'];
+
+        if($args['input']['password'] === $args['input']['confirmation_password']){
+            return User::create([
+                'phone' => $phone,
+                'password' => Hash::make($args['input']['password'])
+            ]);
+        }
     }
 }

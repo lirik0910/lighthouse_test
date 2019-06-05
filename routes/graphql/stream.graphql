@@ -12,13 +12,13 @@ type Stream {
     user: User @belongsTo
 }
 
-extend type Mutation {
-    createStream(
-        started_at: DateTime
-        title: String! @rules(apply: ["required", "min:5", "max:25"])
-        description: String! @rules(apply: ["max:300"])
-        preview: String!
-        message_cost: Int! @rules(apply: ["required", "min:1", "max:9999"])
-        charging: Int! @rules(apply: ["required", "min:1", "max:9999"])
-    ): Stream @inject(context: "user.id", name: "user_id")
-}
+#extend type Mutation {
+#    createStream(
+#        started_at: DateTime
+#        title: String! @rules(apply: ["required", "min:5", "max:25"])
+#        description: String! @rules(apply: ["max:300"])
+#        preview: String!
+#        message_cost: Int! @rules(apply: ["required", "min:1", "max:9999"])
+#        charging: Int! @rules(apply: ["required", "min:1", "max:9999"])
+#    ): Stream @inject(context: "user.id", name: "user_id")
+#}

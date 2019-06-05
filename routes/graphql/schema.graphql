@@ -15,10 +15,11 @@ scalar Upload @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Upload
 #import media_type.graphql
 #import media.graphql
 #import meetings_setting.graphql
+#import approve_phone.graphql
 
-
-type Query{
+type Query {
     me: User @middleware(checks: ["auth:api"]) @auth
+
 }
 
 
@@ -26,10 +27,10 @@ type Query{
     #user(id: ID @eq): User @find(model: "App\\User")
 
 
-type Mutation{
-    "Upload a file that is publicly available."
-    upload(file: Upload!): String
-}
+type Mutation
+    #"Upload a file that is publicly available."
+   # upload(file: Upload!): String
+
 #    createUser(name: String!, email: String!, password: String!): User! @create
 #    updateUser(id: ID!, name: String, email: String, passsword: String)#import comment.graphql: User @update
 #    deleteUser(id: ID!): User @delete

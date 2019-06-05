@@ -1,12 +1,12 @@
 <?php
 
-namespace App\GraphQL\Mutations;
+namespace App\GraphQL\Queries;
 
-use App\Auction;
+use App\GraphQL\Mutations\BaseCodeResolver;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
-class CreateAuction
+class CheckCode extends BaseCodeResolver
 {
     /**
      * Return a value for the field.
@@ -19,12 +19,15 @@ class CreateAuction
      */
     public function resolve($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $args['user_id'] = $context->user()->getAttribute('id');
+        $this->phone = $args['input']['country_code'] . $args['input']['phone_number'];
+        $code = $args['input']['code'];
 
-        if(!isset($args['started_at'])){
-            $args['started_at'] = now();
+        $checkingPhone = $this->getOnCheckingPhone();
+
+        if($checkingPhone->code === $code && !$this->checkIfExpire()){
+            return true;
         }
 
-        return Auction::create($args);
+        return false;
     }
 }
