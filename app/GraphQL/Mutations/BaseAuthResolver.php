@@ -39,4 +39,13 @@ class BaseAuthResolver
         }
         return $decodedResponse;
     }
+
+    public function checkPasswordConfirmation(string $password, string $passwordConfirm)
+    {
+        if($password === $passwordConfirm){
+            return true;
+        }
+
+        return false;
+    }
 }

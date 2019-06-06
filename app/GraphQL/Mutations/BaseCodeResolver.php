@@ -112,6 +112,23 @@ class BaseCodeResolver
     }
 
     /*
+     * Проверяет актуален ли токен и совпадает ли с тем, который приходит от клиента
+     */
+    public function validateToken()
+    {
+        if(!$this->checkIfExpire()){
+
+            $client_token = Cookie::get('token');
+
+            if($client_token === $this->current_object->token){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /*
      * Запись в файл (якобы отправка по SMS) кода
      */
     public function writeToFile(ApprovePhone $checkingPhone)

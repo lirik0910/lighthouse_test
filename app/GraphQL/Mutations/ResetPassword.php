@@ -22,7 +22,7 @@ class ResetPassword extends BaseCodeResolver
     {
         $this->phone = $args['input']['country_code'] . $args['input']['phone_number'];
 
-        if (!$this->checkIfExpire() && $args['input']['password'] === $args['input'] ['password_confirmation']){
+        if ($this->validateToken() && $args['input']['password'] === $args['input'] ['password_confirmation']){
 
             $user = User::where('phone', $this->phone)->first();
 
@@ -45,7 +45,7 @@ class ResetPassword extends BaseCodeResolver
 
         return [
             'status' => 'fail',
-            'message' => 'Your token was expired. Please retry code request!'
+            'message' => 'Your token was expired or incorrect. Please retry code request!'
         ];
     }
 }
