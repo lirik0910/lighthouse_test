@@ -2,12 +2,11 @@
 
 namespace App\GraphQL\Mutations;
 
-use App\User;
+use App\UserAttribute;
 use GraphQL\Type\Definition\ResolveInfo;
-use Illuminate\Support\Facades\Hash;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
-class CreateUser
+class UpdateUserAttribute
 {
     /**
      * Return a value for the field.
@@ -20,18 +19,8 @@ class CreateUser
      */
     public function resolve($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $phone = $args['input']['country_code'] . $args['input']['phone_number'];
+        $attributes = UserAttribute::where('user_id', $args['user_id'])->first();
 
-        if($args['input']['password'] === $args['input']['confirmation_password']){
-            $id = User::create([
-                'phone' => $phone,
-                'password' => Hash::make($args['input']['password'])
-            ])['id'];
-
-            $user = User::find($id);
-            $user->attributes()->create();
-
-            return $user;
-        }
+        return $attributes->update($args);
     }
 }

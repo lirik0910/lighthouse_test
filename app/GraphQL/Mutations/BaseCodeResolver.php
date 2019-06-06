@@ -3,6 +3,7 @@
 namespace App\GraphQL\Mutations;
 
 use App\ApprovePhone;
+use App\Exceptions\CodeSenderException;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -28,16 +29,15 @@ class BaseCodeResolver
         $this->current_object = $this->getOnCheckingPhone();
 
         if(!empty($this->current_object)){
-
             if($this->retryCodeTimeout()){
                  $this->updatePhoneCheck();
 
                  return $this->getOnCheckingPhone();
             } else{
-                return [
-                    'status' => 'fail',
-                    'message' => 'Sending timeout is not over!'
-                ];
+                throw new CodeSenderException(
+                    'You have already requested the code. Please try again later!',
+                    'Operation timeout'
+                );
             }
         } else{
             $this->createPhoneCheck();

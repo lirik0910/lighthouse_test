@@ -13,7 +13,6 @@ type Auction {
 
 extend type Query {
     auction(id: ID! @eq): Auction @find
-    userAuctions(user_id: Int!): [Auction!] @middleware(checks: ["auth:api"])
 }
 
 #extend type Mutation {

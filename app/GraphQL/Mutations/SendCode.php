@@ -2,7 +2,7 @@
 
 namespace App\GraphQL\Mutations;
 
-use App\GraphQL\Mutations\BaseCodeResolver;
+use App\Exceptions\CodeSenderException;
 use GraphQL\Type\Definition\ResolveInfo;
 use Illuminate\Support\Facades\Cookie;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
@@ -25,11 +25,15 @@ class SendCode extends BaseCodeResolver
         $checkingPhone = $this->setOnCheckingPhone();
 
         if($checkingPhone){
-            $this->writeToFile($checkingPhone);
+            if(!$this->writeToFile($checkingPhone)){
+                Cookie::queue('token', $checkingPhone->token, 60);
 
-            Cookie::queue('token', $checkingPhone->token, 60);
+                return $checkingPhone;
+            }
+            throw new CodeSenderException(
+                'Code was not sent. Please try again later!',
+                'Operation error'
+            );
         }
-
-        return $checkingPhone;
     }
 }

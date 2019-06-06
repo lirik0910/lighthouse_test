@@ -1,54 +1,56 @@
 type UserAttribute {
     id: ID!
-    name: String!
-    age: Int!
-    city: String!
-    sex: String!
-    height: Int!
-    hair: String!
-    body: String!
-    skin: String!
-    eyes: String!
-    marital_status: String!
-    children: Boolean!
-    profession: String!
-    smoking: String!
-    alcohol: String!
-    languages: String!
-    about: String!
-    created_at: DateTime!
-    updated_at: DateTime!
+    name: String
+    age: Int
+    city: String
+    sex: String
+    height: Int
+    hair: String
+    body: String
+    skin: String
+    eyes: String
+    marital_status: String
+    children: Boolean
+    profession: String
+    smoking: String
+    alcohol: String
+    languages: String
+    about: String
+    created_at: DateTime
+    updated_at: DateTime
     user: User @belongsTo
 }
 
 extend type Mutation {
-    createUserAttributes(
-        age: Int! @rules(apply: ["required", "numeric", "min:1", "max:99"]),
-        sex: String!
+#    createUserAttributes(
+#        age: Int! @rules(apply: ["required", "numeric", "min:1", "max:99"]),
+#        sex: String!
+#    ): UserAttribute
+#    @inject(context: "user.id", name: "user_id")
+#    @middleware(checks: ["auth:api"])
+#    @create
+
+    updateUserAttribute(
+        id: ID
+        name: String @rules(apply: ["max:20"]),
+        age: Int @rules(apply: ["numeric", "min:1", "max:99"])
+        city: String
+        sex: String
+        height: Int @rules(apply: ["numeric", "max:250"])
+        hair: String
+        body: String
+        skin: String
+        eyes: String
+        marital_status: String
+        children: Boolean
+        profession: String @rules(apply: ["max:100"])
+        smoking: String
+        alcohol: String
+        languages: String
+        about: String @rules(apply: ["max:250"]),
+        user_id: Int @where
     ): UserAttribute
     @inject(context: "user.id", name: "user_id")
-    @middleware(checks: ["auth:api"])
-    @create
-
-    updateUserAttributes(
-        id: ID!
-        name: String! @rules(apply: ["max:20"]),
-        age: Int! @rules(apply: ["required", "numeric", "min:1", "max:99"])
-        city: String!
-        sex: String!
-        height: Int! @rules(apply: ["numeric", "max:250"])
-        hair: String!
-        body: String!
-        skin: String!
-        eyes: String!
-        marital_status: String!
-        children: Boolean!
-        profession: String! @rules(apply: ["max:100"])
-        smoking: String!
-        alcohol: String!
-        languages: String!
-        about: String! @rules(apply: ["max:250"]),
-    ): UserAttribute
     @middleware(checks: ["auth:api"])
     @update
 }

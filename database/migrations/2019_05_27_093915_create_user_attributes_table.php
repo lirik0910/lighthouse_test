@@ -21,9 +21,9 @@ class CreateUserAttributesTable extends Migration
             $table->bigIncrements('id');
             $table->integer('user_id')->unique();
             $table->string('name')->nullable();
-            $table->string('age');
+            $table->string('age')->nullable();
             $table->string('city')->nullable();
-            $table->enum('sex', ['male', 'female']);
+            $table->enum('sex', ['male', 'female'])->nullable();
             $table->string('height')->nullable();
             $table->string('hair')->nullable();
             $table->string('body')->nullable();
