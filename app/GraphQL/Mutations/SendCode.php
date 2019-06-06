@@ -25,7 +25,7 @@ class SendCode extends BaseCodeResolver
         $checkingPhone = $this->setOnCheckingPhone();
 
         if($checkingPhone){
-            if(!$this->writeToFile($checkingPhone)){
+            if($this->writeToFile($checkingPhone)){
                 Cookie::queue('token', $checkingPhone->token, 60);
 
                 return $checkingPhone;
