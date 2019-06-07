@@ -48,10 +48,9 @@ extend type Mutation {
         alcohol: String
         languages: String
         about: String @rules(apply: ["max:250"]),
-        user_id: Int @where
     ): UserAttribute
-    @inject(context: "user.id", name: "user_id")
+    @inject(context: "user.attributes.id", name: "id")  # Не лучшее решение, как мне кажется, потому что 2 раза приходится получать объект UserAttribute
     @middleware(checks: ["auth:api"])
-    @update
+    @update(model: "App\\UserAttribute")
 }
 
