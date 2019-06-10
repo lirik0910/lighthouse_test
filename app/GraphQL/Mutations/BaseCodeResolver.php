@@ -3,6 +3,7 @@
 namespace App\GraphQL\Mutations;
 
 use App\ApprovePhone;
+use App\CountryCode;
 use App\Exceptions\CodeSenderException;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Storage;
@@ -10,7 +11,8 @@ use Illuminate\Support\Str;
 
 class BaseCodeResolver
 {
-    public $phone;
+    public $country_code;
+    public $phone_number;
     public $current_object;
 
     /*
@@ -18,7 +20,9 @@ class BaseCodeResolver
      */
     public function getOnCheckingPhone()
     {
-        return ApprovePhone::where('phone', $this->phone)->first();
+        $codeId = $this->getCountryCodeId();
+
+        return ApprovePhone::where(['phone_number' => $this->phone_number, 'country_code_id' => $codeId])->first();
     }
 
     /*
@@ -52,7 +56,8 @@ class BaseCodeResolver
     public function createPhoneCheck()
     {
         return ApprovePhone::create([
-            'phone' => $this->phone,
+            'country_code_id' => $this->getCountryCodeId(),
+            'phone_number' => $this->phone_number,
             'code' => $this->generateCode(),
             'token' => $this->generateToken(),
         ]);
@@ -83,6 +88,11 @@ class BaseCodeResolver
     public function generateToken()
     {
         return Str::random(60);
+    }
+
+    public function getCountryCodeId()
+    {
+        return CountryCode::where('code', $this->country_code)->first()->id;
     }
 
     /*
@@ -133,7 +143,8 @@ class BaseCodeResolver
      */
     public function writeToFile(ApprovePhone $checkingPhone)
     {
-        $content = now() . ' ' . $checkingPhone->getAttribute('phone') . ' ' . $checkingPhone->getAttribute('code');
+        //var_dump(); die;
+        $content = now() . ' ' . $checkingPhone->country_code->code . $checkingPhone->phone_number . ' ' . $checkingPhone->code;
 
         return Storage::append('sending_codes.txt', $content);
     }

@@ -16,11 +16,13 @@ class SendCode extends BaseCodeResolver
      * @param  mixed[]  $args The arguments that were passed into the field.
      * @param  \Nuwave\Lighthouse\Support\Contracts\GraphQLContext  $context Arbitrary data that is shared between all fields of a single query.
      * @param  \GraphQL\Type\Definition\ResolveInfo  $resolveInfo Information about the query itself, such as the execution state, the field name, path to the field from the root, and more.
+     * @throws mixed
      * @return mixed
      */
     public function resolve($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $this->phone = implode('', $args['input']);
+        $this->phone_number = $args['input']['phone_number'];
+        $this->country_code = $args['input']['country_code'];
 
         $checkingPhone = $this->setOnCheckingPhone();
 

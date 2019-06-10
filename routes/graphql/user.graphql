@@ -17,7 +17,7 @@ type User {
 }
 
 input CreateUserInput {
-    country_code: String!,
+    country_code: CountryCode!,
     phone_number: String!,
     password: String! @rules(apply: ["required", "min:8"]),
     confirmation_password: String!

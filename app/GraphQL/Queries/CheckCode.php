@@ -19,7 +19,8 @@ class CheckCode extends BaseCodeResolver
      */
     public function resolve($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $this->phone = $args['input']['country_code'] . $args['input']['phone_number'];
+        $this->phone_number = $args['input']['phone_number'];
+        $this->country_code = $args['input']['country_code'];
         $code = $args['input']['code'];
 
         $checkingPhone = $this->getOnCheckingPhone();
