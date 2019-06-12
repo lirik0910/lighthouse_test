@@ -22,7 +22,7 @@ type UserAttribute {
 }
 
 extend type Mutation {
-    updateUserAttribute(
+    updateUserAttributes(
         id: ID
         name: String @rules(apply: ["max:20"]),
         age: Int @rules(apply: ["numeric", "min:1", "max:99"])
@@ -41,8 +41,8 @@ extend type Mutation {
         languages: String
         about: String @rules(apply: ["max:250"]),
     ): UserAttribute
-    @inject(context: "user.attributes.id", name: "id")  # Не лучшее решение, как мне кажется, потому что 2 раза приходится получать объект UserAttribute
+    #@inject(context: "user.id", name: "user_id")
     @middleware(checks: ["auth:api"])
-    @update(model: "App\\UserAttribute")
+    #@update(model: "App\\UserAttribute")
 }
 

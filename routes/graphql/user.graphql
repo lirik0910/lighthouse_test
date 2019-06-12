@@ -17,10 +17,10 @@ type User {
 }
 
 input CreateUserInput {
-    country_code: CountryCode!,
-    phone_number: String!,
-    password: String! @rules(apply: ["required", "min:8"]),
-    confirmation_password: String!
+    country_code: CountryCode!, @rules(apply: ["required"])
+    phone_number: String!, @rules(apply: ["required"])
+    password: String! @rules(apply: ["required", "min:8", "max:16"]),
+    confirmation_password: String! @rules(apply: ["required", "min:8", "max:16", "same:input.password"])
 }
 
 extend type Query {
@@ -37,7 +37,6 @@ extend type Mutation {
     ): User!
     @middleware(checks: ["auth:api"])
     @update
-#
 #    deleteUser(id: ID!): User
 #    @middleware(checks: ["auth:api"])
 }

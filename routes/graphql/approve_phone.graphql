@@ -1,20 +1,21 @@
 type ApprovePhone {
     id: ID
-    phone: String
+    phone_number: String
     code: String
-    uodated_at: DateTime
+    token: String
+    updated_at: DateTime
     created_at: DateTime
 }
 
 input GetCodeInput {
-    country_code: String!
-    phone_number: String!
+    country_code: String! @rules(apply: ["required"])
+    phone_number: String! @rules(apply: ["required"])
 }
 
 input CheckCodeInput {
-    country_code: String!
-    phone_number: String!
-    code: String!
+    country_code: String! @rules(apply: ["required"])
+    phone_number: String! @rules(apply: ["required"])
+    code: String! @rules(apply: ["required", "size:6"])
 }
 
 extend type Query {

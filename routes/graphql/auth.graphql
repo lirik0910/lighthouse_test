@@ -1,7 +1,7 @@
 input LoginInput {
-    country_code: CountryCode!
-    phone_number: String!
-    password: String!
+    country_code: CountryCode! @rules(apply: ["required"])
+    phone_number: String! @rules(apply: ["required"])
+    password: String! @rules(apply: ["required", "min:8", "max:16"])
 }
 
 type AuthPayload {
@@ -17,10 +17,10 @@ type LogoutResponse {
 }
 
 input NewPasswordWithCodeInput {
-    country_code: CountryCode!
-    phone_number: String!
-    password: String!
-    password_confirmation: String!
+    country_code: CountryCode! @rules(apply: ["required"])
+    phone_number: String! @rules(apply: ["required"])
+    password: String! @rules(apply: ["required", "min:8", "max:16"])
+    password_confirmation: String! @rules(apply: ["required", "min:8", "max:16", "same:input.password"])
 }
 
 extend type Mutation {

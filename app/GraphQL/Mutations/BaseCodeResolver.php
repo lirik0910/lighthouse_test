@@ -143,7 +143,6 @@ class BaseCodeResolver
      */
     public function writeToFile(ApprovePhone $checkingPhone)
     {
-        //var_dump(); die;
         $content = now() . ' ' . $checkingPhone->country_code->code . $checkingPhone->phone_number . ' ' . $checkingPhone->code;
 
         return Storage::append('sending_codes.txt', $content);
